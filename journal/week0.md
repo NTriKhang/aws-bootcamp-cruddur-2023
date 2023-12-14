@@ -1,1 +1,2 @@
-# Week 0 — Billing and Architecture
+# Week 0
+Download aws cli
