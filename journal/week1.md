@@ -35,3 +35,4 @@ aws dynamodb scan --table-name cruddur_cruds --query "Items" --endpoint-url http
 For postgre connect:
 run cmd: psql -Upostgre --host localhost
 pass: password
+

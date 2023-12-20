@@ -5,25 +5,50 @@ import { Link } from "react-router-dom";
 
 // [TODO] Authenication
 import Cookies from 'js-cookie'
+import { Auth } from 'aws-amplify';
+import { signIn } from 'aws-amplify/auth';
+
 
 export default function SigninPage() {
+
+  const [cognitoErrors, setCognitoErrors] = React.useState('');
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errors, setErrors] = React.useState('');
 
   const onsubmit = async (event) => {
+    console.log('submit')
+    setCognitoErrors('')
     event.preventDefault();
-    setErrors('')
-    console.log('onsubmit')
-    if (Cookies.get('user.email') === email && Cookies.get('user.password') === password){
-      Cookies.set('user.logged_in', true)
-      window.location.href = "/"
-    } else {
-      setErrors("Email and password is incorrect or account doesn't exist")
+    try {
+      // Auth.signIn(username, password)
+      signIn(email, password)
+        .then(user => {
+          localStorage.setItem("access_token", user.signInUserSession.accessToken.jwtToken)
+          window.location.href = "/"
+        })
+        .catch(err => { console.log('Error!', err) });
+    } catch (error) {
+      if (error.code == 'UserNotConfirmedException') {
+        window.location.href = "/confirm"
+      }
+      setCognitoErrors(error.message)
     }
     return false
   }
+  // const onsubmit = async (event) => {
+  //   event.preventDefault();
+  //   setErrors('')
+  //   console.log('onsubmit')
+  //   if (Cookies.get('user.email') === email && Cookies.get('user.password') === password){
+  //     Cookies.set('user.logged_in', true)
+  //     window.location.href = "/"
+  //   } else {
+  //     setErrors("Email and password is incorrect or account doesn't exist")
+  //   }
+  //   return false
+  // }
 
   const email_onchange = (event) => {
     setEmail(event.target.value);
@@ -33,8 +58,8 @@ export default function SigninPage() {
   }
 
   let el_errors;
-  if (errors){
-    el_errors = <div className='errors'>{errors}</div>;
+  if (cognitoErrors){
+    el_errors = <div className='errors'>{cognitoErrors}</div>;
   }
 
   return (
