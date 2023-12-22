@@ -4,9 +4,8 @@ import {ReactComponent as Logo} from '../components/svg/logo.svg';
 import { Link } from "react-router-dom";
 
 // [TODO] Authenication
-import Cookies from 'js-cookie'
-import { Auth } from 'aws-amplify';
 import { signIn } from 'aws-amplify/auth';
+
 
 
 export default function SigninPage() {
@@ -24,15 +23,17 @@ export default function SigninPage() {
   //     console.log('error signing in', error);
   //   }
   // }
+ 
   const onsubmit = async (event) => {
     setCognitoErrors('')
     event.preventDefault();
-
+    console.log(email)
+    //await currentAuthenticatedUser()
     // Auth.signIn(username, password)
     await signIn({ username: email, password: password })
       .then(user => {
         console.log(user)
-        localStorage.setItem("access_token", user.signInUserSession.accessToken.jwtToken)
+        //localStorage.setItem("access_token", user.signInUserSession.accessToken.jwtToken)
         window.location.href = "/"
       })
       .catch(error => {
