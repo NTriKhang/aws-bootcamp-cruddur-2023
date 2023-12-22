@@ -17,24 +17,31 @@ export default function SigninPage() {
   const [password, setPassword] = React.useState('');
   const [errors, setErrors] = React.useState('');
 
+  // async function signIn({ username, password }) {
+  //   try {
+  //     const { isSignedIn, nextStep } = await signIn({ username, password });
+  //   } catch (error) {
+  //     console.log('error signing in', error);
+  //   }
+  // }
   const onsubmit = async (event) => {
-    console.log('submit')
     setCognitoErrors('')
     event.preventDefault();
-    try {
-      // Auth.signIn(username, password)
-      signIn(email, password)
-        .then(user => {
-          localStorage.setItem("access_token", user.signInUserSession.accessToken.jwtToken)
-          window.location.href = "/"
-        })
-        .catch(err => { console.log('Error!', err) });
-    } catch (error) {
-      if (error.code == 'UserNotConfirmedException') {
-        window.location.href = "/confirm"
-      }
-      setCognitoErrors(error.message)
-    }
+
+    // Auth.signIn(username, password)
+    await signIn({ username: email, password: password })
+      .then(user => {
+        console.log(user)
+        localStorage.setItem("access_token", user.signInUserSession.accessToken.jwtToken)
+        window.location.href = "/"
+      })
+      .catch(error => {
+        if (error.code == 'UserNotConfirmedException') {
+          window.location.href = "/confirm"
+        }
+        setCognitoErrors(error.message)
+      });
+
     return false
   }
   // const onsubmit = async (event) => {
