@@ -48,11 +48,12 @@ export default function HomeFeedPage() {
       console.log(err);
     }
   }
+
   // check if we are authenicated
   const checkAuth = async () => {
+
     await currentUserAttributes()
     .then((cognito_user) => {
-        console.log(cognito_user)
         setUser({
           display_name: cognito_user.preferred_username,
           handle: cognito_user.name

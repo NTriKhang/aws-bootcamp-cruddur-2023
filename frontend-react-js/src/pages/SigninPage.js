@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 
 // [TODO] Authenication
 import { signIn } from 'aws-amplify/auth';
-
-
+import { fetchAuthSession } from 'aws-amplify/auth';
 
 export default function SigninPage() {
 
@@ -23,7 +22,16 @@ export default function SigninPage() {
   //     console.log('error signing in', error);
   //   }
   // }
- 
+  async function setupCurrentSession() {
+    try {
+      let session = (await fetchAuthSession()) ?? {};
+      console.log(session)
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   const onsubmit = async (event) => {
     setCognitoErrors('')
     event.preventDefault();
@@ -31,8 +39,9 @@ export default function SigninPage() {
     //await currentAuthenticatedUser()
     // Auth.signIn(username, password)
     await signIn({ username: email, password: password })
-      .then(user => {
+      .then(async user => {
         console.log(user)
+        await setupCurrentSession()
         //localStorage.setItem("access_token", user.signInUserSession.accessToken.jwtToken)
         window.location.href = "/"
       })

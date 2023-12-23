@@ -5,6 +5,8 @@ import {ReactComponent as Logo} from '../components/svg/logo.svg';
 
 // [TODO] Authenication
 import Cookies from 'js-cookie'
+import { confirmSignUp, resendSignUpCode } from 'aws-amplify/auth';
+
 
 export default function ConfirmationPage() {
   const [email, setEmail] = React.useState('');
@@ -21,28 +23,54 @@ export default function ConfirmationPage() {
     setEmail(event.target.value);
   }
 
+  async function handleSignUpConfirmation({ username, confirmationCode }) {
+    
+    try {
+      const { isSignUpComplete, nextStep } = await confirmSignUp({
+        username,
+        confirmationCode
+      });
+      return { isSignUpComplete, nextStep }
+    } catch (error) {
+      console.log('error confirming sign up', error);
+    }
+  }
   const resend_code = async (event) => {
     console.log('resend_code')
-    // [TODO] Authenication
+    try{
+      console.log(await resendSignUpCode({username: email}))
+ 
+    }
+    catch (error){
+      console.log(error);
+    }
   }
 
   const onsubmit = async (event) => {
     event.preventDefault();
     console.log('ConfirmationPage.onsubmit')
     // [TODO] Authenication
-    if (Cookies.get('user.email') === undefined || Cookies.get('user.email') === '' || Cookies.get('user.email') === null){
+    if (email === undefined || email === '' || email === null){
       setErrors("You need to provide an email in order to send Resend Activiation Code")   
     } else {
-      if (Cookies.get('user.email') === email){
-        if (Cookies.get('user.confirmation_code') === code){
-          Cookies.set('user.logged_in',true)
-          window.location.href = "/"
-        } else {
-          setErrors("Code is not valid")
-        }
-      } else {
-        setErrors("Email is invalid or cannot be found.")   
+      const response = await handleSignUpConfirmation({username: email, confirmationCode: code})
+      console.log(response)
+      if(response === undefined || response.isSignUpComplete === undefined){
+        setErrors("Code is not valid")
       }
+      else{
+        window.location.href = "/"
+      }
+      // if (Cookies.get('user.email') === email){
+      //   if (Cookies.get('user.confirmation_code') === code){
+      //     Cookies.set('user.logged_in',true)
+      //     window.location.href = "/"
+      //   } else {
+      //     setErrors("Code is not valid")
+      //   }
+      // } else {
+      //   setErrors("Email is invalid or cannot be found.")   
+      // }
     }
     return false
   }
