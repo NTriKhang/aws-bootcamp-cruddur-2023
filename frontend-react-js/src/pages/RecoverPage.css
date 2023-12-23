@@ -71,8 +71,14 @@ article.recover-article  h2 {
   color: #fff;
 }
 
-
-
+article.recover-article  h3 {
+  text-align: center;
+  color: #fff;
+}
+article.recover-article  .proceed {
+  text-align: center;
+  color: #5e528d;
+}
 article.recover-article button[type='submit'] {
   font-weight: 800;
   outline: none;

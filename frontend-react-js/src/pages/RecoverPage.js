@@ -2,6 +2,8 @@ import './RecoverPage.css';
 import React from "react";
 import {ReactComponent as Logo} from '../components/svg/logo.svg';
 import { Link } from "react-router-dom";
+import { resetPassword } from 'aws-amplify/auth';
+import { confirmResetPassword } from 'aws-amplify/auth';
 
 export default function RecoverPage() {
   // Username is Eamil
@@ -12,14 +14,58 @@ export default function RecoverPage() {
   const [errors, setErrors] = React.useState('');
   const [formState, setFormState] = React.useState('send_code');
 
+  async function handleResetPassword(username) {
+    try {
+      //console.log(username)
+      const output = await resetPassword({ username });
+      console.log(output)
+      handleResetPasswordNextSteps(output);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  function handleResetPasswordNextSteps(output) {
+    const { nextStep } = output;
+    switch (nextStep.resetPasswordStep) {
+      case 'CONFIRM_RESET_PASSWORD_WITH_CODE':
+        const codeDeliveryDetails = nextStep.codeDeliveryDetails;
+        alert(`Confirmation code was sent to ${codeDeliveryDetails.deliveryMedium}`)
+        setFormState('confirm_code')
+        // Collect the confirmation code from the user and pass to confirmResetPassword.
+        break;
+      case 'DONE':
+        console.log('Successfully reset password.');
+        break;
+    }
+  }
+  
+  async function handleConfirmResetPassword({
+    username,
+    confirmationCode,
+    newPassword
+  }) {
+    try {
+      await confirmResetPassword({ username, confirmationCode, newPassword });
+      setFormState('success')
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const onsubmit_send_code = async (event) => {
     event.preventDefault();
     console.log('onsubmit_send_code')
+    await handleResetPassword(username)
     return false
   }
   const onsubmit_confirm_code = async (event) => {
     event.preventDefault();
     console.log('onsubmit_confirm_code')
+    if(password != passwordAgain){
+      alert('password must be the same') 
+    }
+    else{
+      await handleConfirmResetPassword({username, confirmationCode: code, newPassword: password})
+    }
     return false
   }
 
@@ -107,9 +153,11 @@ export default function RecoverPage() {
   }
 
   const success = () => {
-    return (<form>
-      <p>Your password has been successfully reset!</p>
-      <Link to="/signin" className="proceed">Proceed to Signin</Link>
+    return (<form className='recover_form'>
+      <div className='fields text_field'>
+        <h3>Your password has been successfully reset!</h3>
+        <Link to="/signin" className="proceed">Proceed to Signin</Link>
+      </div> 
     </form>
     )
     }
