@@ -1,2 +1,4 @@
 flask
 flask-cors
+psycopg[binary]
+psycopg[pool]

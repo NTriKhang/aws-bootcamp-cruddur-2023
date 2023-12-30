@@ -5,7 +5,7 @@ So, in the text file, i have exported two enviroment var, it should work normall
 I haven't tried to connect to rds yet, still local postgres
 maybe first you need to cd to backend-flask
 
-to test connection I think u should run bin/dbconnect first
+to test connection I think u should run bin/dbconnect first, then it turn out the db not exist so u can't connect to it :)
 
 then run bin/db-drop, just for sure
 - bin/db-create
