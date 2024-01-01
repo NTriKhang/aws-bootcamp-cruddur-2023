@@ -1,4 +1,5 @@
 
+export GITPOD_IP=$(curl ifconfig.me)
 aws ec2 modify-security-group-rules \
     --group-id $DB_SG_ID \
     --region us-east-1 \
