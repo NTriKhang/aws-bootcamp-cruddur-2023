@@ -2,6 +2,15 @@
 
 echo 'db-create'
 
-NO_DB_CONNECTION_URL=$(sed 's/\/cruddur//g' <<<"$CONNECTION_URL")
+if [ "$1" = "prod" ]; then
+    echo 'using prod connection'
+    CON_URL=$PROD_CONNECTION_URL
+else
+    CON_URL=$CONNECTION_URL
+fi
+
+psql $CON_URL
+
+NO_DB_CONNECTION_URL=$(sed 's/\/cruddur//g' <<<"$CON_URL")
 psql $NO_DB_CONNECTION_URL -c 'CREATE DATABASE cruddur'
 
