@@ -3,5 +3,22 @@ postgresql://[user[:password]@][netloc][:port][/dbname][?param1=value1&...]
 export CONNECTION_URL='postgresql://postgres:password@localhost:5432/cruddur'
 gp env CONNECTION_URL='postgresql://postgres:password@localhost:5432/cruddur'
 
-export PROD_CONNECTION_URL='postgresql://postgres:Postgrespassword@khangrdsdb.cp8s6cuasvpa.us-east-1.rds.amazonaws.com:5432/cruddur'
-gp env PROD_CONNECTION_URL='postgresql://postgres:Postgrespassword@khangrdsdb.cp8s6cuasvpa.us-east-1.rds.amazonaws.com:5432/cruddur'
+export PROD_CONNECTION_URL='postgresql://postgres:password@khangrdscruddur.cp8s6cuasvpa.us-east-1.rds.amazonaws.com:5432/cruddur'
+gp env PROD_CONNECTION_URL='postgresql://postgres:password@khangrdscruddur.cp8s6cuasvpa.us-east-1.rds.amazonaws.com:5432/cruddur'
+
+GITPOD_IP=$(curl ifconfig.me)
+
+export DB_SG_ID="sg-0f7ee649caae75606"
+gp env DB_SG_ID="sg-0f7ee649caae75606"
+export DB_SG_RULE_ID="sgr-0ccca0684c0174a94"
+gp env DB_SG_RULE_ID="sgr-0ccca0684c0174a94"
+
+aws ec2 modify-security-group-rules \
+    --group-id $DB_SG_ID \
+    --security-group-rules SecurityGroupRuleId=$DB_SG_RULE_ID,SecurityGroupRule="{IpProtocol=tcp,FromPort=5432,ToPort=5432,CidrIpv4=$GITPOD_IP/32,Description=GITPOD}"
+
+
+aws ec2 modify-security-group-rules \
+    --group-id sg-0f7ee649caae75606 \
+    --region us-east-1 \
+    --security-group-rules SecurityGroupRuleId=sgr-0e29bc40f22c5beaa,SecurityGroupRule="{Description=GITPOD,IpProtocol=tcp,CidrIpv4=$GITPOD_IP/32,FromPort=5432,ToPort=5432}"
