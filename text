@@ -8,10 +8,11 @@ gp env PROD_CONNECTION_URL='postgresql://postgres:password@khangrdscruddur.cp8s6
 
 GITPOD_IP=$(curl ifconfig.me)
 
-export DB_SG_ID="sg-0f7ee649caae75606"
-gp env DB_SG_ID="sg-0f7ee649caae75606"
-export DB_SG_RULE_ID="sgr-0ccca0684c0174a94"
-gp env DB_SG_RULE_ID="sgr-0ccca0684c0174a94"
+; this have been modified
+; export DB_SG_ID="sg-0f7ee649caae75606"
+; gp env DB_SG_ID="sg-0f7ee649caae75606"
+; export DB_SG_RULE_ID="sgr-0ccca0684c0174a94"
+; gp env DB_SG_RULE_ID="sgr-0ccca0684c0174a94"
 
 aws ec2 modify-security-group-rules \
     --group-id $DB_SG_ID \
