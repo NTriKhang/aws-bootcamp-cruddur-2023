@@ -12,3 +12,7 @@ then run the bash script in ddb folder
 -list-table(optional, just for sure)
 -seed
 -scan(optional, just for sure)
+
+Now you can observe data 
+- get-conversation for all message in one group, notice that I have firmed it so if u need, modify the 'message_group_uuid'
+- list-conversation for get all message from one users, I firmed the handle, so if u need, modify the 'handle' at line 32
