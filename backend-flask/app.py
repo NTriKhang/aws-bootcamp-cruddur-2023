@@ -40,7 +40,7 @@ def data_messages(handle):
   user_sender_handle = 'Khang22'
   user_receiver_handle = request.args.get('user_reciever_handle')
 
-  model = Messages.run(user_sender_handle=user_sender_handle, user_receiver_handle=user_receiver_handle)
+  model = Messages.run(message_group_uuid="5ae290ed-55d1-47a0-bc6d-fe2bc2700399")
   if model['errors'] is not None:
     return model['errors'], 422
   else:

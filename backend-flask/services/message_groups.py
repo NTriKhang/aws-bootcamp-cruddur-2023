@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta, timezone
+from lib.ddb import Ddb
+
 class MessageGroups:
   def run(user_handle):
     model = {
@@ -6,19 +8,14 @@ class MessageGroups:
       'data': None
     }
 
-    now = datetime.now(timezone.utc).astimezone()
-    results = [
-      {
-        'uuid': '24b95582-9e7b-4e0a-9ad1-639773ab7552',
-        'display_name': 'Andrew Brown',
-        'handle':  'andrewbrown',
-        'created_at': now.isoformat()
-      },
-      {
-        'uuid': '417c360e-c4e6-4fce-873b-d2d71469b4ac',
-        'display_name': 'Worf',
-        'handle':  'worf',
-        'created_at': now.isoformat()
-    }]
-    model['data'] = results
+    my_user_uuid = "af46d8c3-4a5d-4b6c-a359-fd239d3da974"
+
+    print(f"UUID: {my_user_uuid}", flush=True)
+
+    ddb = Ddb.client()
+    print("init success", flush=True)
+    data = Ddb.list_message_groups(ddb, my_user_uuid)
+    print("list_message_groups:",data)
+
+    model['data'] = data
     return model

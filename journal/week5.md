@@ -16,3 +16,7 @@ then run the bash script in ddb folder
 Now you can observe data 
 - get-conversation for all message in one group, notice that I have firmed it so if u need, modify the 'message_group_uuid'
 - list-conversation for get all message from one users, I firmed the handle, so if u need, modify the 'handle' at line 32
+
+I see there are a lot of issue, u should solve it by yourself, rememeber to observe the env var
+
+Notice that I firmed user_uuid and group_uuid just for andrew, but the value of rds and dynamodb is not the same so u need to re-seed data again, u can handle it for auto seed if u want
