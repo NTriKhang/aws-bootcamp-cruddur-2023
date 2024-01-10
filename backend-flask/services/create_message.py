@@ -9,7 +9,7 @@ class CreateMessage:
       'errors': None,
       'data': None
     }
-    mode='update'
+
     if user_sender_handle == None or len(user_sender_handle) < 1:
       model['errors'] = ['user_sender_handle_blank']
 
@@ -36,10 +36,9 @@ class CreateMessage:
       # else:
       #   rev_handle = user_receiver_handle
       
-      user_sender_handle = 'andrewbrown'
-      rev_handle = 'bayko'
+      rev_handle = user_receiver_handle
       users = db.query_array_json(sql,{
-        'handle': 'andrewbrown',
+        'handle': user_sender_handle,
         'user_receiver_handle': rev_handle
       })
       print("USERS =-=-=-=-==")
@@ -50,7 +49,7 @@ class CreateMessage:
       
       ddb = Ddb.client()
       message_group_uuid = '5ae290ed-55d1-47a0-bc6d-fe2bc2700399'
-      now = datetime.now(timezone.utc).astimezone()
+
       if (mode == "update"):
         data = Ddb.create_message(
           client=ddb,
@@ -72,4 +71,5 @@ class CreateMessage:
           other_user_handle=other_user['handle']
         )
       model['data'] = data
+      print(data, flush=True)
     return model

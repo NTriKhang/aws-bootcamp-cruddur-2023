@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta, timezone
 from lib.ddb import Ddb
+from lib.db import db
 
 class MessageGroups:
   def run(user_handle):
@@ -7,8 +8,11 @@ class MessageGroups:
       'errors': None,
       'data': None
     }
-
-    my_user_uuid = "546cc8ef-dc53-427a-ac5e-58325b1d3a52"
+    
+    sql = db.template('users','uuid_from_handle')
+    my_user_uuid = db.query_value(sql, {
+      'handle': user_handle
+    })
 
     print(f"UUID: {my_user_uuid}", flush=True)
 

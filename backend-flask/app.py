@@ -28,7 +28,7 @@ cors = CORS(
 
 @app.route("/api/message_groups", methods=['GET'])
 def data_message_groups():
-  user_handle  = 'Khang22'
+  user_handle  = 'andrewbrown'
   model = MessageGroups.run(user_handle=user_handle)
   if model['errors'] is not None:
     return model['errors'], 422
@@ -37,7 +37,7 @@ def data_message_groups():
 
 @app.route("/api/messages/@<string:handle>", methods=['GET'])
 def data_messages(handle):
-  user_sender_handle = 'Khang22'
+  user_sender_handle = 'andrewbrown'
   user_receiver_handle = request.args.get('user_reciever_handle')
 
   model = Messages.run(message_group_uuid="5ae290ed-55d1-47a0-bc6d-fe2bc2700399")
@@ -54,8 +54,8 @@ def data_create_message():
   # user_receiver_handle = request.json['user_receiver_handle']
   user_receiver_handle = 'bayko'
   message = request.json['message']
-
-  model = CreateMessage.run(message=message,user_sender_handle=user_sender_handle,user_receiver_handle=user_receiver_handle)
+  mode = 'update'
+  model = CreateMessage.run(mode=mode,message=message,user_sender_handle=user_sender_handle,user_receiver_handle=user_receiver_handle)
   if model['errors'] is not None:
     return model['errors'], 422
   else:
