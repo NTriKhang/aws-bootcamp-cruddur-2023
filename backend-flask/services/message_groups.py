@@ -8,7 +8,7 @@ class MessageGroups:
       'data': None
     }
 
-    my_user_uuid = "af46d8c3-4a5d-4b6c-a359-fd239d3da974"
+    my_user_uuid = "546cc8ef-dc53-427a-ac5e-58325b1d3a52"
 
     print(f"UUID: {my_user_uuid}", flush=True)
 

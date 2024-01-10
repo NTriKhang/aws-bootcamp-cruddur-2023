@@ -20,3 +20,5 @@ Now you can observe data
 I see there are a lot of issue, u should solve it by yourself, rememeber to observe the env var
 
 Notice that I firmed user_uuid and group_uuid just for andrew, but the value of rds and dynamodb is not the same so u need to re-seed data again, u can handle it for auto seed if u want
+
+I also complete send message from andrew to bayko
